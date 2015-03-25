@@ -26,6 +26,6 @@ module LuhnValidator
     check_digit = 10 - (n_arr[1..n_arr.length - 1].reduce(:+)) % 10
     
     #implicit return to check whether check_digit is correct
-    check-digit == nums_a.last
+    check_digit == nums_a.last
   end
 end
