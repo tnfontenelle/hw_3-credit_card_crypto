@@ -8,11 +8,11 @@ module SubstitutionCipher
     def self.encrypt(document, key)
       # TODO: encrypt string using caeser cipher
       # Hash matching ord with printable chars
-      hash = (32..126).inject({}) {|h, n| h[n] = n.chr; h}
+      #arr = (32..126).to_a
       # Performing calculation to find new ord number
-      new_doc = document.to_s.chars.map{|d| (d.ord - 32 + key) % 95 + 32}
+      new_doc = document.to_s.chars.map{|d| ((d.ord - 32) + key) % 95 + 32}
       # using the new ord number as a key to get the char from hash
-      new_doc.map { |c| hash[c]}.join
+      new_doc.map { |c| c.chr}.join
     end
 
     # Decrypts String document using integer key
@@ -23,11 +23,11 @@ module SubstitutionCipher
     def self.decrypt(document, key)
       # TODO: decrypt string using caeser cipher
       # Hash matching ord with printable chars
-      hash = (32..126).inject({}) { |h, n| h[n] = n.chr; h }
+      #hash = (32..126).inject({}) { |h, n| h[n] = n.chr; h }
       # Performing reverse calculation to find old ord number
-      new_doc = document.to_s.chars.map{|d| ((( d.ord ) - 32) % 95) + 32 - key }
+      new_doc = document.to_s.chars.map{|d| (( d.ord  - 32) - key) % 95 + 32  }
       # using the old ord number as a key to get the original char
-      new_doc.map { |c| hash[c]}.join
+      new_doc.map { |c| c.chr}.join
     end
   end
 
