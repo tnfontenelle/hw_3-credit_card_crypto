@@ -27,7 +27,7 @@ Benchmark.bmbm do |bench|
       (sum *=9) % 10 == nums_a.first
     end
   end
-  
+
   bench.report('luhn tiff') do
     n.times do
       number = "2323242453535"
@@ -89,6 +89,32 @@ Benchmark.bmbm do |bench|
       end.join
     end
   end
+  bench.report('Ceasar Tiff1') do
+    n.times do
+      key = 45
+      document = "Zero ASCII value by subtracting 32 so modulus will be correct for
+    printable character.  Subtract offset and then take modulo 95 so
+    character will wrap back around to zero.  Then add back 32 so
+    ASCII value will be between 32 and 126."
+      new_doc = document.to_s.chars.map{|d| ((d.ord - 32) + key) % 95 + 32}
+      # using the new ord number as a key to get the char from hash
+      new_doc.map { |c| c.chr}.join
+    end
+  end
+  bench.report('Ceasar Tiff2') do
+    n.times do
+      key = 45
+      document = "Zero ASCII value by subtracting 32 so modulus will be correct for
+    printable character.  Subtract offset and then take modulo 95 so
+    character will wrap back around to zero.  Then add back 32 so
+    ASCII value will be between 32 and 126."
+      hash = (32..126).inject({}) {|h, n| h[n] = n.chr; h}
+      # Performing calculation to find new ord number
+      new_doc = document.to_s.chars.map{|d| (d.ord - 32 + key) % 95 + 32}
+      # using the new ord number as a key to get the char from hash
+      new_doc.map { |c| hash[c]}.join
+    end
+  end
   bench.report('permutation') do
     n.times do
       key = 45
@@ -108,11 +134,41 @@ Benchmark.bmbm do |bench|
     printable character.  Subtract offset and then take modulo 95 so
     character will wrap back around to zero.  Then add back 32 so
     ASCII value will be between 32 and 126."
-      origin = (0..127).to_a
-      cipher = origin.to_a.shuffle(random: Random.new(key))
-      document.to_s.chars.map do |char|
-        origin[char.ord].chr
-      end.join
+      cipher = (0..127).to_a
+      a = cipher.shuffle(random: Random.new(key))
+      document.to_s.chars.map{|p| a[p.ord].chr}.join
+    end
+  end
+  bench.report('permutationTiff1') do
+    n.times do
+      key = 45
+      document = "Zero ASCII value by subtracting 32 so modulus will be correct for
+    printable character.  Subtract offset and then take modulo 95 so
+    character will wrap back around to zero.  Then add back 32 so
+    ASCII value will be between 32 and 126."
+      ori = (0..127).to_a
+      # randomly shuffling ords in parallel array
+      new_ar = ori.shuffle(random: Random.new(key))
+      # mapping each char->ord and using its index to search parall.array
+      new_doc = document.to_s.chars.map{ |d| new_ar[ori.index( d.ord )] }
+      #joining all chars to implicitly return a string
+      new_doc.map{ |d| d.chr }.join
+    end
+  end
+  bench.report('permutation Tiff2') do
+    n.times do
+      key = 45
+      document = "Zero ASCII value by subtracting 32 so modulus will be correct for
+    printable character.  Subtract offset and then take modulo 95 so
+    character will wrap back around to zero.  Then add back 32 so
+    ASCII value will be between 32 and 126."
+      ori = (0..127).to_a
+      # randomly shuffling ords in parallel array
+      new_ar = ori.shuffle(random: Random.new(key))
+      # mapping each char->ord and using its index to search parall.array
+      new_doc = document.to_s.chars.map{ |d| new_ar[ori.index( d.ord )] }
+      #joining all chars to implicitly return a string
+      new_doc.map{ |d| d.chr }.join
     end
   end
 
