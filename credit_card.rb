@@ -20,10 +20,10 @@ class CreditCard
   def to_json
     {
       # TODO: setup the hash with all instance vairables to serialize into json
-      "Name": @owner,
-      "Card Number": @number,
-      "Expiration Date": @expiration_date,
-      "Credit Card Network": @credit_network
+      Name: @owner,
+      Card_Number: @number,
+      Expiration_Date: @expiration_date,
+      Credit_Card_Network: @credit_network
      }.to_json
   end
 
