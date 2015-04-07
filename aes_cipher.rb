@@ -1,6 +1,7 @@
 require 'openssl'
 require 'json'
 
+# This is the AesCipher Module
 module AesCipher
   def self.encrypt(document, key)
     # TODO: Return JSON string of array: [iv, ciphertext]
@@ -14,7 +15,7 @@ module AesCipher
     cipher.key = key
     initvec = cipher.random_iv
     ciphertext = cipher.update(document) + cipher.final
-    [initvec.unpack("H*"),ciphertext.unpack("H*")].to_json
+    [initvec.unpack('H*'), ciphertext.unpack('H*')].to_json
   end
 
   def self.decrypt(aes_crypt, key)
@@ -23,7 +24,7 @@ module AesCipher
     decipher.decrypt
     decipher.key = key
     input = JSON.parse(aes_crypt)
-    decipher.iv = input[0].pack("H*")
-    decipher.update(input[1].pack("H*")) + decipher.final
+    decipher.iv = input[0].pack('H*')
+    decipher.update(input[1].pack('H*')) + decipher.final
   end
 end

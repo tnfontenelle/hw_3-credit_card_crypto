@@ -79,4 +79,3 @@ Statistics on Credit Card use
     Total number of credit card transactions in the United States:
         26.2 billion in 2012
         19 billion in 2003
-
