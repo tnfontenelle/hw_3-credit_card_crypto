@@ -79,3 +79,15 @@ Statistics on Credit Card use
     Total number of credit card transactions in the United States:
         26.2 billion in 2012
         19 billion in 2003
+### D. Hashing Credit Cards
+Your team must implement hashing methods for credit card objects. Recall that all objects in Ruby have a `hash` method by default. However, this method does not use the contents of their objects to produce hashes. Furthermore, this hash method cannot produce a cryptographically strong hash.
+
+  - Override the default hash: Override the default `hash` method of CreditCard to hash the serialized data of the card. Credit cards with identical information should produce identical hashes. Do not use any cryptographic hashing method here.
+  - Create a cryptographic hash: Implement the `secure_hash` method to produce a SHA256 hash (return a hexadecimal string). Credit cards with identical information should produce identical secure hashes.
+  - BUT FIRST: look at the hashing test specs in `spec/hash_spec.rb`
+    - *Implement all the tests* that are shown (you are welcome to add your own as well)
+    - make sure your implemented tests *all fail* before writing *any* code!
+    - make sure they pass *one-by-one* while writing code :)
+    - We are coming to the end of this assignment -- time to do some cleanup:
+    - Add references in `Gemfile` to all the gems you are using in your code and test files.
+    - run the `rubocop` gem on your code to see if your code style is appropriate

@@ -5,10 +5,14 @@ require_relative '../double_trans_cipher'
 require 'minitest/autorun'
 require 'yaml'
 
+passwords = YAML.load_file 'spec/test_passwords.yml'
+
 describe 'Test card info encryption' do
   before do
-    @cc = CreditCard.new('4916603231464963', 'Mar-30-2020', 'Soumya Ray', 'Visa')
-    @key = 35
+    @cc = CreditCard.new('4916603231464963', 'Mar-30-2020',
+                         'Soumya Ray', 'Visa')
+    @key = 3
+    @key2 = 'I am a very very special key'
   end
 
   describe 'Using Caeser cipher' do
@@ -52,16 +56,19 @@ describe 'Test card info encryption' do
       @cc.to_s.wont_equal ''
     end
   end
-  #describe 'Using Aes cipher' do
-  #  it 'should encrypt card information' do
-  #    enc = AesCipher.encrypt(@cc, @key)
-  #    enc.wont_equal @cc.to_s
-  #  end
-
-  #  it 'should decrypt text' do
-  #    enc = AesCipher.encrypt(@cc, @key)
-  #    dec = AesCipher.decrypt(enc, @key)
-  #    dec.must_equal @cc.to_s
-  #  end
-  #end
+  passwords.each do |owner, pass|
+    describe "Using Aes cipher to encrypt #{owner} password" do
+      pass.each do |pa|
+        it 'should encrypt card information' do
+          enc = AesCipher.encrypt(pa, @key2)
+          enc.wont_equal pa
+        end
+        it 'should decrypt text' do
+          enc = AesCipher.encrypt(pa, @key2)
+          dec = AesCipher.decrypt(enc, @key2)
+          dec.must_equal pa.to_s
+        end
+      end
+    end
+  end
 end
